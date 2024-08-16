@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsString, MinLength } from 'class-validator';
-import { DificultLevel } from 'src/utils/level.utils';
+import { DificultLevel } from 'src/@types/Enum/dificultLevel.enum';
 
 export class CreateLearningPathDto {
   @IsNotEmpty({ message: 'A formação deve ter um nome válido' })

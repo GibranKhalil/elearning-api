@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { QuestionService } from './question.service';
-import { QuestionController } from './question.controller';
+import { QuestionService } from './service/question.service';
+import { QuestionController } from './controller/question.controller';
+import { MongoClientConfig } from 'src/config/mongoClient.config';
 
 @Module({
   controllers: [QuestionController],
-  providers: [QuestionService],
+  providers: [QuestionService, MongoClientConfig],
 })
 export class QuestionModule {}

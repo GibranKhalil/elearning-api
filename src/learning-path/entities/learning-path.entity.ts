@@ -1,4 +1,4 @@
-import { DificultLevel } from 'src/utils/level.utils';
+import { DificultLevel } from 'src/@types/Enum/dificultLevel.enum';
 
 export class LearningPathEntity {
   constructor(

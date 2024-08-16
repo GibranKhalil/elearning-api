@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TagService } from './tag.service';
-import { TagController } from './tag.controller';
+import { TagService } from './service/tag.service';
+import { TagController } from './controller/tag.controller';
+import { MongoClientConfig } from 'src/config/mongoClient.config';
 
 @Module({
   controllers: [TagController],
-  providers: [TagService],
+  providers: [TagService, MongoClientConfig],
 })
 export class TagModule {}

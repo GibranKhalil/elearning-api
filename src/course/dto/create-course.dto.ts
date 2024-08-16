@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsString, MinLength } from 'class-validator';
-import { DificultLevel } from 'src/utils/level.utils';
+import { DificultLevel } from 'src/@types/level.utils';
 
 export class CreateCourseDto {
   @IsNotEmpty({ message: 'O curso deve ter um nome válido' })
