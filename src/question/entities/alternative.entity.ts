@@ -1,8 +1,7 @@
 export class AlternativeEntity {
   constructor(
-    private readonly id: string,
+    private id: 'A' | 'B' | 'C' | 'D',
     private content: string,
     private isCorrect: boolean,
-    private questionId: string,
   ) {}
 }

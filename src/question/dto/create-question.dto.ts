@@ -9,6 +9,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { QuestionType } from 'src/@types/Enum/question.enum';
+import { CreateAlternativeDto } from './create-alternative.dto';
+import { Type } from 'class-transformer';
+import { TagEntity } from 'src/tag/entities/tag.entity';
 
 export class CreateQuestionDto {
   @IsNotEmpty({ message: 'A pergunta da questão não pode estar vazia' })
@@ -28,8 +31,14 @@ export class CreateQuestionDto {
   type: QuestionType;
 
   @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1, { message: 'Deve ser vinculado no mínimo 1 tag' })
+  @Type(() => TagEntity)
+  linkedTags: TagEntity[];
+
   @ValidateNested()
   @IsArray()
-  @ArrayMinSize(2, { message: 'Teve ser incluído no mínimo 2 alternativas' })
-  linkedAlternative: string[];
+  @ArrayMinSize(2, { message: 'Deve ser criado no mínimo 2 alternativas' })
+  @Type(() => CreateAlternativeDto)
+  alternatives: CreateAlternativeDto[];
 }

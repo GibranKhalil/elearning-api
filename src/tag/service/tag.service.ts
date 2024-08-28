@@ -13,7 +13,7 @@ export class TagService {
   constructor(private readonly mongoClientConfig: MongoClientConfig) {}
 
   async create(createTagDto: CreateTagDto) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<TagEntity>(this.collectionName);
@@ -24,13 +24,11 @@ export class TagService {
       };
     } catch (error) {
       throw new Error(`Erro ao criar a tag ${createTagDto.name}`);
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async findAll() {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<TagEntity>(this.collectionName);
@@ -38,13 +36,11 @@ export class TagService {
       return response;
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async findOne(id: string) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<TagEntity>(this.collectionName);
@@ -54,13 +50,11 @@ export class TagService {
       return response;
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async update(id: string, updateTagDto: UpdateTagDto) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<TagEntity>(this.collectionName);
@@ -77,13 +71,11 @@ export class TagService {
       };
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async remove(id: string) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<TagEntity>(this.collectionName);
@@ -96,8 +88,6 @@ export class TagService {
       };
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 }

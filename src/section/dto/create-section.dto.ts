@@ -18,7 +18,7 @@ export class CreateSectionDto {
 
   @IsString({ message: 'A descrição deve ser do tipo string' })
   @MinLength(25, { message: 'A descrição deve ter no mínimo 25 caracteres' })
-  descricao: string;
+  description: string;
 
   @IsOptional()
   @ValidateNested()

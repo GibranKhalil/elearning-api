@@ -4,6 +4,7 @@ import { UpdateQuestionDto } from '../dto/update-question.dto';
 import { MongoClientConfig } from 'src/config/mongoClient.config';
 import { QuestionEntity } from '../entities/question.entity';
 import { ObjectId } from 'mongodb';
+import { CreateAlternativeDto } from '../dto/create-alternative.dto';
 
 @Injectable()
 export class QuestionService {
@@ -12,25 +13,50 @@ export class QuestionService {
 
   constructor(private readonly mongoClientConfig: MongoClientConfig) {}
 
+  checkAlternatives(alternatives: CreateAlternativeDto[]): boolean {
+    const correctAlternatives = alternatives.filter(
+      (alternative) => alternative.isCorrect,
+    );
+
+    return correctAlternatives.length > 1;
+  }
+
+  checkUniqueAlternativesID(alternatives: CreateAlternativeDto[]): boolean {
+    const ids = alternatives.map((alternative) => alternative.id);
+    const uniqueIds = new Set(ids);
+
+    return ids.length === uniqueIds.size;
+  }
+
   async create(createQuestionDto: CreateQuestionDto) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<QuestionEntity>(this.collectionName);
-      await collection.insertOne(createQuestionDto);
+      if (!this.checkAlternatives(createQuestionDto.alternatives)) {
+        if (this.checkUniqueAlternativesID(createQuestionDto.alternatives)) {
+          await collection.insertOne(createQuestionDto);
+          return {
+            sucess: true,
+            message: `Questão criada com sucesso`,
+          };
+        }
+        return {
+          sucess: false,
+          message: `Não pode haver mais de uma alternativa com o mesmo id`,
+        };
+      }
       return {
-        sucess: true,
-        message: `Questão} criada com sucesso`,
+        sucess: false,
+        message: `Só pode haver uma alternativa correta`,
       };
     } catch (error) {
       throw new Error(`Erro ao criar a questão`);
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async findAll() {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<QuestionEntity>(this.collectionName);
@@ -38,13 +64,11 @@ export class QuestionService {
       return response;
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async findOne(id: string) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<QuestionEntity>(this.collectionName);
@@ -54,13 +78,11 @@ export class QuestionService {
       return response;
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async update(id: string, updateQuestionDto: UpdateQuestionDto) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<QuestionEntity>(this.collectionName);
@@ -77,13 +99,11 @@ export class QuestionService {
       };
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async remove(id: string) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<QuestionEntity>(this.collectionName);
@@ -96,8 +116,6 @@ export class QuestionService {
       };
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 }

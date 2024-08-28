@@ -5,16 +5,13 @@ export class CreateAlternativeDto {
   @IsString({ message: 'O conteúdo da alternativa deve ser um texto' })
   content: string;
 
+  @IsNotEmpty({ message: 'Deve ser informado o identificador da alternativa' })
+  @IsString({ message: 'O ID Deve ser uma string' })
+  id: 'A' | 'B' | 'C' | 'D';
+
   @IsNotEmpty({
     message: 'Você deve definir se a alternativa está correta ou não',
   })
   @IsBoolean({ message: 'A definição de correta deve ser verdadeiro/falso' })
   isCorrect: boolean;
-
-  @IsNotEmpty({ message: 'A Alternativa deve estar vinculada a uma questão' })
-  @IsString({
-    message:
-      'O id da questão em que a alternativa está vinculada deve ser um texto',
-  })
-  questionId: string;
 }

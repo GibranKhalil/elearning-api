@@ -5,5 +5,6 @@ export class LessonEntity {
     private readonly id: string,
     private name: string,
     private type: LessonType,
+    private linkedQuestions: string[],
   ) {}
 }

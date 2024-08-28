@@ -13,7 +13,7 @@ export class SectionService {
   constructor(private readonly mongoClientConfig: MongoClientConfig) {}
 
   async create(createSectionDto: CreateSectionDto) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<SectionEntity>(this.collectionName);
@@ -24,13 +24,11 @@ export class SectionService {
       };
     } catch (error) {
       throw new Error(`Erro ao criar a seção`);
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async findAll() {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<SectionEntity>(this.collectionName);
@@ -38,13 +36,11 @@ export class SectionService {
       return response;
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async findOne(id: string) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<SectionEntity>(this.collectionName);
@@ -54,13 +50,11 @@ export class SectionService {
       return response;
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async update(id: string, updateSectionDto: UpdateSectionDto) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<SectionEntity>(this.collectionName);
@@ -77,13 +71,11 @@ export class SectionService {
       };
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 
   async remove(id: string) {
-    const client = await this.mongoClientConfig.connect();
+    const client = this.mongoClientConfig.getClient();
     try {
       const db = client.db(this.dbName);
       const collection = db.collection<SectionEntity>(this.collectionName);
@@ -96,8 +88,6 @@ export class SectionService {
       };
     } catch (error) {
       throw error;
-    } finally {
-      await this.mongoClientConfig.close();
     }
   }
 }

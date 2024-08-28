@@ -1,4 +1,5 @@
 import { QuestionType } from 'src/@types/Enum/question.enum';
+import { AlternativeEntity } from './alternative.entity';
 
 export class QuestionEntity {
   constructor(
@@ -6,6 +7,6 @@ export class QuestionEntity {
     private description: string,
     private question: string,
     private type: QuestionType,
-    private linkedAlternative?: string[],
+    private alternatives: AlternativeEntity[],
   ) {}
 }

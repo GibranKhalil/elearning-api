@@ -1,5 +1,14 @@
-import { IsEnum, IsNotEmpty, IsString, MinLength } from 'class-validator';
-import { DificultLevel } from 'src/@types/level.utils';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MinLength,
+  ValidateNested,
+} from 'class-validator';
+import { DificultLevel } from 'src/@types/Enum/dificultLevel.enum';
 
 export class CreateCourseDto {
   @IsNotEmpty({ message: 'O curso deve ter um nome válido' })
@@ -15,4 +24,10 @@ export class CreateCourseDto {
     message: 'O nível de dificuldade selecionado é inválido',
   })
   dificultLevel: DificultLevel;
+
+  @IsOptional()
+  @ValidateNested()
+  @IsArray()
+  @ArrayMinSize(1, { message: 'Deve ser incluído no mínimo 1 seção' })
+  private linkedSection: string[];
 }
